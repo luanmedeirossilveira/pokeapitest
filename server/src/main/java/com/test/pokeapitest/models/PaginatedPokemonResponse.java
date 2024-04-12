@@ -1,4 +1,4 @@
-package com.test.pokeapitest.web.model;
+package com.test.pokeapitest.models;
 
 import java.util.List;
 
