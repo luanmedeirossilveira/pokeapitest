@@ -5,7 +5,7 @@ import { Pagination } from "./pagination";
 import { useEffect, useState } from "react";
 import { addPokedex, getAllPokemons } from "../services/pokemonService";
 import { Pokemon } from "../types";
-
+import { toast } from "react-toastify";
 
 type SearchPokemon = {
   pokemonName: string;
@@ -18,13 +18,21 @@ export const SearchPokemon = () => {
   const [page, setPage] = useState(1);
 
   const addFavorites = async (name: string) => {
-    await addPokedex(name);
-  }
+    await addPokedex(name)
+      .then(() => {
+        toast.success("Adicionado aos favoritos")
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      })
+      .catch((error) => toast.error(error?.response?.data?.message));
+  };
 
   useEffect(() => {
-    getAllPokemons(page, 10).then((pokemons) =>
-      setPokemons(pokemons.data)
-    );
+    getAllPokemons(page, 10)
+      .then((pokemons) => setPokemons(pokemons.data))
+      .catch((error) => toast.error("Erro:", error.message));
   }, [page]);
 
   console.log(watch("pokemonName"));
@@ -57,8 +65,7 @@ export const SearchPokemon = () => {
             key={pokemon.name}
             name={pokemon.name.toUpperCase()}
             onClick={() => {
-              addFavorites(pokemon.name)
-              window.location.reload()
+              addFavorites(pokemon.name);
             }}
           />
         ))}

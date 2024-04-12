@@ -3,12 +3,15 @@ import { getAllPokedex } from "../services/pokemonService";
 import { useEffect, useState } from "react";
 import { Favorites } from "../types";
 import { PokemonCard } from "./pokemon-card";
+import { toast } from "react-toastify";
 
 export const CreateFavorites = () => {
   const [favorites, setFavorites] = useState<Favorites[]>([]);
 
   useEffect(() => {
-    getAllPokedex().then((pokemons) => setFavorites(pokemons.data));
+    getAllPokedex()
+      .then((pokemons) => setFavorites(pokemons.data))
+      .catch((error) => toast.error(error?.response?.data?.message));
   }, []);
   
   return (
