@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.test.pokeapitest.entity.Favorites;
+import com.test.pokeapitest.exception.FavoriteNotFoundException;
 import com.test.pokeapitest.exception.FavoriteUniqueViolationException;
 import com.test.pokeapitest.models.*;
 import com.test.pokeapitest.repository.FavoriteRepository;
@@ -64,6 +65,12 @@ public class FavoriteService {
   }
 
   public Favorites findByName(String name) {
+    Favorites searchName = favoriteRepository.findByName(name);
+
+    if (name == null || searchName == null) {
+      throw new FavoriteNotFoundException(String.format("Favorito id=%s não encontrado", name));
+    }
+
     return favoriteRepository.findByName(name);
   }
 }
