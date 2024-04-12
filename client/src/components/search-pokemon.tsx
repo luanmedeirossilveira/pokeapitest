@@ -47,7 +47,7 @@ export const SearchPokemon = () => {
         minH="30vh"
         gap={2}
         flexDirection="column"
-        maxH="50vh"
+        maxH="60vh"
         overflowY="auto"
       >
         {pokemons?.results?.map((pokemon) => (
